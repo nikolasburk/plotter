@@ -12,13 +12,16 @@ const Home: React.FC = () => {
     <main className="flex min-h-screen flex-col items-center p-12 bg-gray-100">
       <h1 className="text-4xl font-bold mb-8">Sample Sizes</h1>
       {sampleSizes.map((sampleSize) => (
-        <button
-          className="px-6 py-3 m-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
-          key={sampleSize}
-          onClick={() => router.push(`/benchmark?sampleSize=${sampleSize}`)}
-        >
-          Size: {sampleSize}
-        </button>
+        <div key={sampleSize} className="flex flex-col">
+          <button
+            className="px-6 py-3 m-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
+            key={sampleSize}
+            onClick={() => router.push(`/benchmark?sampleSize=${sampleSize}`)}
+          >
+            Size: {sampleSize}
+          </button>
+          <div>test</div>
+        </div>
       ))}
     </main>
   );
