@@ -1,25 +1,27 @@
-"use client"
+"use client";
 
-import React, { Component } from 'react';
-import Histogram from "./components/Histogram";
-import { getChartData, ChartData } from './data';
+import React from "react";
+import { useRouter } from "next/navigation";
 
+const Home: React.FC = () => {
+  const router = useRouter();
 
-export default class Home extends Component {
+  const sampleSizes = [1000, 5000];
 
-  componentDidMount() {
-    console.log(`render home`);
+  return (
+    <main className="flex min-h-screen flex-col items-center p-12 bg-gray-100">
+      <h1 className="text-4xl font-bold mb-8">Sample Sizes</h1>
+      {sampleSizes.map((sampleSize) => (
+        <button
+          className="px-6 py-3 m-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
+          key={sampleSize}
+          onClick={() => router.push(`/benchmark?sampleSize=${sampleSize}`)}
+        >
+          Size: {sampleSize}
+        </button>
+      ))}
+    </main>
+  );
+};
 
-  }
-  
-  render() {
-
-    const chartData: ChartData = getChartData()
-
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-       <Histogram  chartData={chartData}/>
-      </main>
-    );
-  }
-}
+export default Home;

@@ -1,16 +1,7 @@
-import { prismaCSV } from './data/prisma';
-import { drizzleCSV } from './data/drizzle';
-import { typeORMCSV } from './data/typeorm';
+import fs from 'fs';
+import path from 'path';
 
 export type ORM = "prisma" | "drizzle" | "typeorm";
-export type BenchmarkRunForQuery = {
-  benchmarkRunIndex: number;
-} & {
-  [key in ORM]: number;
-};
-
-// Assume the CSV data is already defined in your code as prismaCSV, drizzleCSV, and typeORMCSV
-// Example: const prismaCSV = `...`;
 
 type CSVData = { [key: string]: number; };
 export type ChartDataEntry = {
@@ -19,7 +10,20 @@ export type ChartDataEntry = {
   drizzle: number;
   typeorm: number;
 };
-export type ChartData = { [key in ORM]: ChartDataEntry[]; };
+export type ChartData = { [key: string]: ChartDataEntry[]; };
+
+function readFileContent(orm: ORM, sampleSize: number = 5000): string {
+  try {
+    const filePath = path.join(process.cwd() + `/src/app/data/${orm}-${sampleSize}.csv`);
+    const data = fs.readFileSync(filePath, 'utf-8');
+    // console.log(`return for ${orm}\n`, data);
+    return data; 
+  } catch (err) {
+    console.error(err);
+    return "";
+  }
+}
+
 
 function parseCSV(csv: string): CSVData[] {
   const [header, ...rows] = csv.trim().split('\n');
@@ -51,13 +55,22 @@ function transformData(prismaCSVData: CSVData[], drizzleCSVData: CSVData[], type
   return chartData;
 }
 
-export function getChartData(): ChartData {
-  const prismaData = parseCSV(prismaCSV);
-  const drizzleData = parseCSV(drizzleCSV);
-  const typeORMData = parseCSV(typeORMCSV);
+export function getChartData(sampleSize?: number): ChartData {
 
-  const chartData = transformData(prismaData, drizzleData, typeORMData);
-  // console.log(JSON.stringify(chartData, null, 2));
+  const prismaRawCSV = readFileContent('prisma', sampleSize);
+  const drizzleRawCSV = readFileContent('drizzle', sampleSize);
+  const typeormRawCSV = readFileContent('typeorm', sampleSize);
+
+
+  const prismaData = parseCSV(prismaRawCSV);
+  const drizzleData = parseCSV(drizzleRawCSV);
+  const typeORMData = parseCSV(typeormRawCSV);
+
+  // console.log(`getChartData: prisma`, prismaData)
+  // console.log(`getChartData: drizzle`, drizzleData)
+  // console.log(`getChartData: typeORM`, typeORMData)
+
+  const chartData: ChartData = transformData(prismaData, drizzleData, typeORMData);
   return chartData;
 }
 
