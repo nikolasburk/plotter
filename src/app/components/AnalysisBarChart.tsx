@@ -18,7 +18,7 @@ const AnalysisBarChart: React.FC<HistogramProps> = ({ chartAnalysisData }) => {
   return (
     <div className="w-full">
       <div className="mt-6 w-full">
-        <h3 className="text-lg font-semibold mb-4">Analysis</h3>
+        <h3 className="text-lg font-semibold mb-4">Median</h3>
         <BarChart
           className="w-full"
           data={chartAnalysisData}
