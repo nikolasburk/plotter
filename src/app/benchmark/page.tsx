@@ -6,10 +6,10 @@ import { getChartData } from "../data";
 import { getAnalysisData } from "../data";
 import AnalysisBarChart from '../components/AnalysisBarChart'
 
-
 const Home: React.FC<{ searchParams: { size: number } }> = async ({ searchParams }) => {
+  console.log(`get chart data for: `, searchParams.size)
   const chartData = await getChartData(searchParams.size);
-  const analysisData = await getAnalysisData();
+  const analysisData = await getAnalysisData(searchParams.size);
 
   // console.log(chartData)
   return (
