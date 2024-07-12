@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const Home: React.FC = () => {
   const router = useRouter();
 
-  const sampleSizes = [1000, 5000];
+  const sampleSizes = [1000, 5000, 7500, 10000];
 
   return (
     <main className="flex min-h-screen flex-col items-center p-12 bg-gray-100">
@@ -16,7 +16,7 @@ const Home: React.FC = () => {
           <button
             className="px-6 py-3 m-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
             key={sampleSize}
-            onClick={() => router.push(`/benchmark?sampleSize=${sampleSize}`)}
+            onClick={() => router.push(`/benchmark?size=${sampleSize}`)}
           >
             Size: {sampleSize}
           </button>
